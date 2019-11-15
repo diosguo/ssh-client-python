@@ -10,13 +10,16 @@ import shutil
 import sys
 import os
 import pickle
+import getpass
+
 
 def main():
     """TODO: Docstring for main.
     :returns: TODO
 
     """
-    config_dir = '~/.config/ssh-client-python'
+    config_dir = '/home/%s/.config/ssh-client-python'%getpass.getuser()
+    print(config_dir)
     args = sys.argv
     if not os.path.exists(config_dir):
         os.makedirs(config_dir)
@@ -25,7 +28,6 @@ def main():
     hosts = pickle.load(open(os.path.join(config_dir, 'hosts.pkl'),'rb'))
     if len(args) == 1:
         print('Usage: [-a|-c|-r] add/connect/remove.')
-        exit(0)
     else:
         if '-a' == args[1]:
             host_name = args[2]
@@ -42,6 +44,10 @@ def main():
                 os.system('ssh %s@%s'%(hosts[host_name][0], hosts[host_name][1]))
             else:
                 print('Host not exist!')
+        elif '-l' == args[1]:
+            
+            for host in hosts:
+                print(host, hosts[host][1])
 
             
          
